@@ -1,1 +1,1 @@
-"""工具函数模块"""
+"""Moduł funkcji narzędziowych"""
