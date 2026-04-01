@@ -1,5 +1,5 @@
 """Szablony wiadomości"""
-from config import CHANNEL_URL, VERIFY_COST, HELP_NOTION_URL
+from config import CHANNEL_URL, VERIFY_COST
 
 
 def get_welcome_message(full_name: str, invited_by: bool = False) -> str:
@@ -71,7 +71,6 @@ def get_help_message(is_admin: bool = False) -> str:
         f"/verify5 <link> - YouTube Student Premium (koszt: -{VERIFY_COST} punktów)\n"
         "/getV4Code <verification_id> - pobierz kod Bolt.new\n"
         "/help - pokaż tę wiadomość\n"
-        f"Pomoc przy błędach: {HELP_NOTION_URL}\n"
     )
 
     if is_admin:
