@@ -18,7 +18,10 @@ def is_group_chat(update: Update) -> bool:
 async def reject_group_command(update: Update) -> bool:
     """Ograniczenia czatu grupowego: tylko dozwolone /verify /verify2 /verify3 /verify4 /verify5 /qd"""
     if is_group_chat(update):
-        await update.message.reply_text("Czaty grupowe obsługują tylko /verify /verify2 /verify3 /verify4 /verify5 /qd，Proszę używać innych poleceń w prywatnej rozmowie。")
+        await update.message.reply_text(
+            "Na czatach grupowych dostępne są tylko: /verify /verify2 /verify3 /verify4 /verify5 /qd. "
+            "Pozostałe polecenia używaj w rozmowie prywatnej z botem."
+        )
         return True
     return False
 

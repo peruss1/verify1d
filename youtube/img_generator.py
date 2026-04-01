@@ -1,4 +1,4 @@
-"""PNG 学生证生成模块 - Penn State LionPATH"""
+"""Generowanie PNG legitymacji — szablon Penn State LionPATH."""
 import random
 from datetime import datetime
 from io import BytesIO
@@ -6,14 +6,13 @@ import base64
 
 
 def generate_psu_id():
-    """生成随机 PSU ID (9位数字)"""
+    """Losowy numer PSU ID (9 cyfr)."""
     return f"9{random.randint(10000000, 99999999)}"
 
 
 def generate_psu_email(first_name, last_name):
     """
-    生成 PSU 邮箱
-    格式: firstName.lastName + 3-4位数字 @psu.edu
+    Adres @psu.edu: firstName.lastName + 3–4 cyfry.
     """
     digit_count = random.choice([3, 4])
     digits = ''.join([str(random.randint(0, 9)) for _ in range(digit_count)])
@@ -23,21 +22,20 @@ def generate_psu_email(first_name, last_name):
 
 def generate_html(first_name, last_name, school_id='2565'):
     """
-    生成 Penn State LionPATH HTML
+    HTML strony LionPATH (Penn State).
 
     Args:
-        first_name: 名字
-        last_name: 姓氏
-        school_id: 学校 ID
+        first_name, last_name: dane studenta
+        school_id: identyfikator uczelni w systemie
 
     Returns:
-        str: HTML 内容
+        str: HTML
     """
     psu_id = generate_psu_id()
     name = f"{first_name} {last_name}"
     date = datetime.now().strftime('%m/%d/%Y, %I:%M:%S %p')
 
-    # 随机选择专业
+    # Losowy kierunek
     majors = [
         'Computer Science (BS)',
         'Software Engineering (BS)',
@@ -66,7 +64,7 @@ def generate_html(first_name, last_name, school_id='2565'):
 
         body {{
             font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
-            background-color: #e0e0e0; /* 浏览器背景 */
+            background-color: #e0e0e0; /* tło jak w przeglądarce */
             margin: 0;
             padding: 20px;
             color: var(--text-color);
@@ -74,7 +72,7 @@ def generate_html(first_name, last_name, school_id='2565'):
             justify-content: center;
         }}
 
-        /* 模拟浏览器窗口 */
+        /* okno przeglądarki */
         .viewport {{
             width: 100%;
             max-width: 1100px;
@@ -85,7 +83,7 @@ def generate_html(first_name, last_name, school_id='2565'):
             flex-direction: column;
         }}
 
-        /* 顶部导航栏 LionPATH */
+        /* pasek LionPATH */
         .header {{
             background-color: var(--psu-blue);
             color: white;
@@ -102,7 +100,7 @@ def generate_html(first_name, last_name, school_id='2565'):
             gap: 15px;
         }}
 
-        /* PSU Logo 模拟 */
+        /* logo PSU (uproszczone) */
         .psu-logo {{
             font-family: "Georgia", serif;
             font-size: 20px;
@@ -136,7 +134,7 @@ def generate_html(first_name, last_name, school_id='2565'):
         .nav-item {{ cursor: pointer; }}
         .nav-item.active {{ color: var(--psu-blue); font-weight: bold; border-bottom: 2px solid var(--psu-blue); padding-bottom: 8px; }}
 
-        /* 主内容区 */
+        /* treść główna */
         .content {{
             padding: 30px;
             flex: 1;
@@ -167,7 +165,7 @@ def generate_html(first_name, last_name, school_id='2565'):
             font-weight: bold;
         }}
 
-        /* 学生信息卡片 */
+        /* karta studenta */
         .student-card {{
             background: #fcfcfc;
             border: 1px solid #e0e0e0;
@@ -185,7 +183,7 @@ def generate_html(first_name, last_name, school_id='2565'):
             padding: 4px 8px; border-radius: 4px; font-weight: bold; border: 1px solid #b2f5ea;
         }}
 
-        /* 课程表 */
+        /* plan zajęć */
         .schedule-table {{
             width: 100%;
             border-collapse: collapse;
@@ -208,7 +206,7 @@ def generate_html(first_name, last_name, school_id='2565'):
         .course-code {{ font-weight: bold; color: var(--psu-blue); }}
         .course-title {{ font-weight: 500; }}
 
-        /* 打印适配 */
+        /* druk */
         @media print {{
             body {{ background: white; padding: 0; }}
             .viewport {{ box-shadow: none; max-width: 100%; min-height: auto; }}
@@ -342,66 +340,56 @@ def generate_html(first_name, last_name, school_id='2565'):
 
 def generate_image(first_name, last_name, school_id='2565'):
     """
-    生成 Penn State LionPATH 截图 PNG
-
-    Args:
-        first_name: 名字
-        last_name: 姓氏
-        school_id: 学校 ID
+    Zrzut ekranu LionPATH jako PNG.
 
     Returns:
-        bytes: PNG 图片数据
+        bytes: dane PNG
     """
     try:
         from playwright.sync_api import sync_playwright
 
-        # 生成 HTML
         html_content = generate_html(first_name, last_name, school_id)
 
-        # 使用 Playwright 截图（替代 Selenium）
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
             page = browser.new_page(viewport={'width': 1200, 'height': 900})
             page.set_content(html_content, wait_until='load')
-            page.wait_for_timeout(500)  # 等待样式加载
+            page.wait_for_timeout(500)  # stabilizacja stylów
             screenshot_bytes = page.screenshot(type='png', full_page=True)
             browser.close()
 
         return screenshot_bytes
 
     except ImportError:
-        raise Exception("需要安装 playwright: pip install playwright && playwright install chromium")
+        raise Exception("Zainstaluj playwright: pip install playwright && playwright install chromium")
     except Exception as e:
-        raise Exception(f"生成图片失败: {str(e)}")
+        raise Exception(f"Generowanie obrazu nie powiodło się: {str(e)}")
 
 
 if __name__ == '__main__':
-    # 测试代码
     import sys
     import io
 
-    # 修复 Windows 控制台编码问题
     if sys.platform == 'win32':
         sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
-    print("测试 PSU 图片生成...")
+    print("Test generowania PNG PSU...")
 
     first_name = "John"
     last_name = "Smith"
 
-    print(f"姓名: {first_name} {last_name}")
+    print(f"Imię i nazwisko: {first_name} {last_name}")
     print(f"PSU ID: {generate_psu_id()}")
-    print(f"邮箱: {generate_psu_email(first_name, last_name)}")
+    print(f"E-mail: {generate_psu_email(first_name, last_name)}")
 
     try:
         img_data = generate_image(first_name, last_name)
 
-        # 保存测试图片
         with open('test_psu_card.png', 'wb') as f:
             f.write(img_data)
 
-        print(f"✓ 图片生成成功! 大小: {len(img_data)} bytes")
-        print("✓ 已保存为 test_psu_card.png")
+        print(f"✓ PNG OK, rozmiar: {len(img_data)} bajtów")
+        print("✓ Zapisano test_psu_card.png")
 
     except Exception as e:
-        print(f"✗ 错误: {e}")
+        print(f"✗ Błąd: {e}")

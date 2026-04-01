@@ -1,14 +1,14 @@
-# SheerID 教师验证配置文件
+# Konfiguracja Verify1D — nauczyciel K12
 
-# SheerID API 配置
+# Endpointy API
 PROGRAM_ID = '68d47554aa292d20b9bec8f7'
 SHEERID_BASE_URL = 'https://services.sheerid.com'
 MY_SHEERID_URL = 'https://my.sheerid.com'
 
-# 文件大小限制
+# Limit rozmiaru pliku
 MAX_FILE_SIZE = 1 * 1024 * 1024  # 1MB
 
-# 学校配置（高中）
+# Szkoły średnie
 SCHOOLS = {
     '3995910': {
         'id': 3995910,
@@ -62,7 +62,7 @@ SCHOOLS = {
     
 }
 
-# 默认学校
+# Domyślna szkoła
 DEFAULT_SCHOOL_ID = '3995910'
 
 

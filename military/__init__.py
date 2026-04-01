@@ -1,2 +1,2 @@
-"""ChatGPT 军人 SheerID 认证模块"""
+"""Moduł Verify1D — weryfikacja wojskowa ChatGPT."""
 

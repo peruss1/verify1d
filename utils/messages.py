@@ -12,7 +12,7 @@ def get_welcome_message(full_name: str, invited_by: bool = False) -> str:
         msg += "Dziękujemy za dołączenie przez link zaproszenia — osoba zapraszająca otrzymała 2 punkty.\n"
 
     msg += (
-        "\nTen bot automatycznie wykonuje weryfikację SheerID.\n"
+        "\nTen bot automatycznie wykonuje weryfikację Verify1D.\n"
         "Szybki start:\n"
         "/about - informacje o funkcjach bota\n"
         "/balance - sprawdź saldo punktów\n"
@@ -28,10 +28,10 @@ def get_welcome_message(full_name: str, invited_by: bool = False) -> str:
 def get_about_message() -> str:
     """Pobiera wiadomość 'o bocie'"""
     return (
-        "🤖 Bot do automatycznej weryfikacji SheerID\n"
+        "🤖 Bot do automatycznej weryfikacji Verify1D\n"
         "\n"
         "Funkcje:\n"
-        "- Automatyczna weryfikacja SheerID dla uczniów/nauczycieli\n"
+        "- Automatyczna weryfikacja Verify1D dla uczniów/nauczycieli\n"
         "- Obsługuje Gemini One Pro, ChatGPT Teacher K12, Spotify Student, YouTube Student, Bolt.new Teacher\n"
         "\n"
         "Zdobywanie punktów:\n"
@@ -47,6 +47,7 @@ def get_about_message() -> str:
         "3. Poczekaj na przetworzenie i sprawdź wynik\n"
         "4. Bolt.new automatycznie pobiera kod — ręcznie: /getV4Code <verification_id>\n"
         "\n"
+        "Autor: peruss1\n"
         "Więcej komend: /help"
     )
 
@@ -54,7 +55,7 @@ def get_about_message() -> str:
 def get_help_message(is_admin: bool = False) -> str:
     """Pobiera wiadomość pomocy"""
     msg = (
-        "📖 Bot SheerID - pomoc\n"
+        "📖 Bot Verify1D — pomoc\n"
         "\n"
         "Komendy użytkownika:\n"
         "/start - rozpocznij (rejestracja)\n"
@@ -102,7 +103,7 @@ def get_insufficient_balance_message(current_balance: int) -> str:
 def get_verify_usage_message(command: str, service_name: str) -> str:
     """Pobiera instrukcję użycia komendy weryfikacji"""
     return (
-        f"Sposób użycia: {command} <link SheerID>\n\n"
+        f"Sposób użycia: {command} <link Verify1D>\n\n"
         "Przykład:\n"
         f"{command} https://services.sheerid.com/verify/xxx/?verificationId=xxx\n\n"
         "Jak zdobyć link:\n"

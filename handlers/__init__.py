@@ -1,1 +1,1 @@
-"""命令处理器模块"""
+"""Moduł obsługi poleceń"""
