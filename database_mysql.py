@@ -24,14 +24,14 @@ class MySQLDatabase:
         
         # 从环境变量读取配置（推荐）或使用默认值
         self.config = {
-            'host': os.getenv('MYSQLHOST'),
-            'port': int(os.getenv('MYSQLPORT', 3306)),
-            'user': os.getenv('MYSQLUSER'),
-            'password': os.getenv('MYSQLPASSWORD'),
-            'database': os.getenv('MYSQLDATABASE'),
+            'host': os.getenv('MYSQL_HOST', 'localhost'),
+            'port': int(os.getenv('MYSQL_PORT', 3306)),
+            'user': os.getenv('MYSQL_USER', 'tgbot_user'),
+            'password': os.getenv('MYSQL_PASSWORD', 'your_password_here'),
+            'database': os.getenv('MYSQL_DATABASE', 'tgbot_verify'),
             'charset': 'utf8mb4',
             'autocommit': False,
-    }
+        }
         logger.info(f"MySQL 数据库初始化: {self.config['user']}@{self.config['host']}/{self.config['database']}")
         self.init_database()
 
@@ -191,36 +191,23 @@ class MySQLDatabase:
         conn = self.get_connection()
         cursor = conn.cursor(DictCursor)
 
-def get_user(self, user_id: int) -> Optional[Dict]:
-    conn = self.get_connection()
-    cursor = conn.cursor(DictCursor)
-
-    try:
-        cursor.execute("SELECT * FROM users WHERE user_id = %s", (user_id,))
-        row = cursor.fetchone()
-
-        if row:
-            result = dict(row)
-
-            if result.get('created_at'):
-                result['created_at'] = result['created_at'].isoformat()
-
-            if result.get('last_checkin'):
-                result['last_checkin'] = result['last_checkin'].isoformat()
-
-            import os
-            admin_id = int(os.getenv("ADMIN_USER_ID", 0))
-
-            if user_id == admin_id:
-                result["balance"] = 999999999
-
-            return result
-        else:
+        try:
+            cursor.execute("SELECT * FROM users WHERE user_id = %s", (user_id,))
+            row = cursor.fetchone()
+            
+            if row:
+                # 创建新字典并转换datetime为ISO格式字符串
+                result = dict(row)
+                if result.get('created_at'):
+                    result['created_at'] = result['created_at'].isoformat()
+                if result.get('last_checkin'):
+                    result['last_checkin'] = result['last_checkin'].isoformat()
+                return result
             return None
 
-    finally:
-        cursor.close()
-        conn.close()
+        finally:
+            cursor.close()
+            conn.close()
 
     def user_exists(self, user_id: int) -> bool:
         """检查用户是否存在"""
